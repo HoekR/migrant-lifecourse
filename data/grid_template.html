@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+body {
+  background-color: #474e5d;
+  font-family: Helvetica, sans-serif;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+  background-color: #3182bd;
+  padding: 10px;
+}
+
+.grid-container > div {
+  background-color: #deebf7;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+.personinfo {
+  grid-row-start: 1;
+  grid-row-end: 5;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+</style>
+</head>
+<body>
+
+<h1>Grid Lines</h1>
+
+<div class="grid-container">
+  <div class="personinfo">1</div>
+  <div class="familyinfo"><a href="family">family info</a></div>
+  <!-- <div class="">3</div>
+  <div class="item4">4</div>
+  <div class="item5">5</div>
+  <div class="item6">6</div>
+  <div class="item7">7</div>
+  <div class="item8">8</div> -->
+</div>
+
+<p>You can refer to line numbers when placing grid items.</p>
+
+</body>
+</html>
