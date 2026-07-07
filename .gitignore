@@ -158,3 +158,11 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# --- dighum_template: manifest + scratch ---
+# Machine-local manifest (copy from data_manifest.toml.example)
+data_manifest.toml
+data_manifest.local.toml
+# Ephemeral pipeline outputs (see data_manifest.toml scratch tier)
+scratch/
+.uvcache/

@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "migrant-lifecourse"
+version = "0.1.0"
+description = "Convert lifecourse spreadsheets into timeline HTML pages for the Dutch–Australian migration exhibition (manifest-based data paths + provenance)."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Rik Hoekstra" }]
+keywords = ["digital-humanities", "migration", "timeline", "lifecourse", "national-archives-australia"]
+
+# NOTE: pandas is pinned <3 on purpose. The legacy transformation code in
+# migrant_lifecourse/ relies on Series.fillna(inplace=True) propagating to the
+# parent DataFrame, which pandas 3.0 (copy-on-write) no longer does. Removing the
+# in-place mutations (see .cursor/rules/project-standards.mdc) is a tracked follow-up
+# in PLAN.md; until then keep pandas 2.x.
+dependencies = [
+    "pandas>=2.0,<3",
+    "numpy>=1.24,<2",
+    "pyarrow>=14.0",
+    "tomli-w>=1.0",
+    "openpyxl>=3.1.2",
+    "requests>=2.34.2",
+    "tqdm>=4.0",
+]
+
+[project.optional-dependencies]
+# Jupyter notebooks are the "explore" phase surface (make_site.ipynb, national_archives/*.ipynb).
+notebook = [
+    "jupyter>=1.0",
+    "ipython>=8.0",
+]
+# National Archives of Australia RecordSearch scraper subproject (national_archives/).
+scraper = [
+    "recordsearch-data-scraper>=0.1.0",
+    "python-slugify>=8.0",
+]
+
+[project.scripts]
+make-site = "migrant_lifecourse.build_site:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["migrant_lifecourse", "data_io"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
