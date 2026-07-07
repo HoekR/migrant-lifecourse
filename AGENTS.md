@@ -55,3 +55,19 @@ Dutch–Australian migration exhibition. Read **`PLAN.md`**, **`docs/DATA.md`**,
 This repo follows [dighum_template](https://github.com/HoekR/dighum_template). Wisdom and
 add-ons live in that repo (`wisdom/INDEX.md`, `addons/README.md`); apply later with its
 `scripts/apply_addon.sh <this-repo> <name>`.
+
+## Cursor Cloud specific instructions
+
+- Environment is **uv**-managed. Deps are refreshed on startup by the update script
+  (`uv sync --extra notebook --extra scraper`). `uv` lives at `~/.local/bin/uv`; if it is
+  not on `PATH`, invoke it by that path.
+- `data_manifest.toml` is **gitignored** (machine-local). Before running the pipeline or
+  `data_io.check`, create it once: `cp data_manifest.toml.example data_manifest.toml`. The
+  example uses repo-relative tier roots, so **run pipeline commands from the repo root**.
+- Build the site: `uv run make-site` (writes `scratch/timeline_events.jsonl` + provenance
+  sidecar and renders `personen/*.html`). Validate paths: `uv run python -m data_io.check`.
+  Tests: `uv run pytest -q`.
+- `make_site.ipynb` has a pre-existing invalid stored output (a `stream` output missing the
+  required `name` field) that makes `jupyter nbconvert --execute` fail during validation.
+  To run it headless, clear outputs first (e.g. execute via `nbclient` after setting each
+  code cell's `outputs = []`). The canonical, non-notebook build is `uv run make-site`.
