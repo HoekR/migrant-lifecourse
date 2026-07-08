@@ -2,7 +2,7 @@
 import json
 import os
 
-from settings import basepath
+from migrant_lifecourse.settings import basepath
 
 def readnames(flname):
     with open(flname, 'r') as infl:

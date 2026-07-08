@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-from helpers import *
-from patterns import *
-from templates import *
+from migrant_lifecourse.helpers import *
+from migrant_lifecourse.patterns import *
+from migrant_lifecourse.templates import *
 
 class Sheet2Timeline(object):
     def __init__(self, name, excelfile, 

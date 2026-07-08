@@ -1,0 +1,53 @@
+# Machine-specific data manifest. Copy to data_manifest.toml and edit tier roots.
+#   cp data_manifest.toml.example data_manifest.toml
+# LLM agents: add [datasets.<name>] BEFORE referencing a logical_name in code,
+# then run `uv run python -m data_io.check`.
+#
+# For this repository the input data (data/) and rendered pages (personen/) live
+# in-repo, so the `hot` tier root is the repo root itself ("."). Run pipeline
+# commands from the repository root so relative resolution works.
+
+[phases]
+explore = "jsonl, pkl, xlsx, ad-hoc notebooks"
+semi = "jsonl + .meta.toml sidecars"
+frozen = "parquet (duckdb-queryable)"
+
+[tiers.hot]
+# Repo-relative: the workbook, names index and rendered pages are committed in-repo.
+root = "."
+mount_check = ""
+
+[tiers.scratch]
+# Ephemeral / intermediate outputs (gitignored). Point elsewhere for large runs.
+root = "scratch"
+mount_check = ""
+
+# --- datasets: one block per logical name ---
+
+[datasets.lifecourses_workbook]
+tier = "hot"
+path = "data/Lifecourses NA tentoonstelling.xlsx"
+phase = "explore"
+description = "Source Excel workbook; one sheet per person with life events."
+parent = ""
+
+[datasets.person_names]
+tier = "hot"
+path = "data/names.json"
+phase = "explore"
+description = "Index mapping person slug -> workbook sheet name."
+parent = ""
+
+[datasets.timeline_events]
+tier = "scratch"
+path = "timeline_events.jsonl"
+phase = "semi"
+description = "Flattened per-event lifecourse records (provenance sidecar)."
+parent = "lifecourses_workbook"
+
+[datasets.timeline_pages]
+tier = "hot"
+path = "personen"
+phase = "semi"
+description = "Rendered per-person timeline HTML pages (output directory)."
+parent = "timeline_events"
